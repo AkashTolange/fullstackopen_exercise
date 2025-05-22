@@ -1,3 +1,5 @@
+//this one is for deleting person 
+
 const Persons = ({ persons, deletePerson }) => {
   return (
     <div>
