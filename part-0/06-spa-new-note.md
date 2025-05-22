@@ -1,20 +1,16 @@
-title spa-new-note
+```mermaid
+sequenceDiagram
+  participant browser
+  participant server
 
-note over browser:
-JavaScript creates note object from form
-adds it to client side notes array
-and re-renders the client view.
-It creates a POST request to new_note_spa url
-containing the new note as JSON-data
-end note
+  Note right of browser: javascript contains note object from form adds it to client side  notes array and re-renders the clients view. it creates a POST request to new_note_spa url containing the new note as JSON data
 
-browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+  browser->> server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+  activate server
 
-note over server:
-server creates a new note object,
-and adds it to an array called notes,
-which is represented as data.json
-end note 
+  Note left of server: server creates a new note object, and adds it to an array called notes, which is represented as data.json
 
 
-server-->browser: 201 created
+ server-->> browser: 201 created
+ deactivate server
+ ```
