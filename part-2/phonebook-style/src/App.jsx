@@ -60,8 +60,8 @@ const App = () => {
           })
             .catch(error => { 
               //yade already deleted xa vane eroror notification if update fails
-
-              //this way we can handle and 
+              //
+              //this way we can handle and use two tab ok to test 
               if( error.response && error.response.status === 404 ) {
               setNotification( { 
                 message: `Information of ${existingPerson.name} has already been removed from server`,
@@ -152,4 +152,4 @@ const App = () => {
   )
 }
 
-export default App
+export default App;
