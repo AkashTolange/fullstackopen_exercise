@@ -58,28 +58,28 @@ const App = () => {
             }, 5000);
             
           })
-            // .catch(error => { 
-            //   //yade already deleted xa vane eroror notification if update fails
+            .catch(error => { 
+              //yade already deleted xa vane eroror notification if update fails
 
-            //   //this way we can handle and 
-            //   if( error.response && error.response.status === 404 ) {
-            //   setNotification( { 
-            //     message: `Information of ${existingPerson.name} has already been removed from server`,
-            //     type: 'error'
-            //   });
-            //   setTimeout(() => {
-            //     setNotification({ message: null, type: ''});
-            //   }, 5000);
+              //this way we can handle and 
+              if( error.response && error.response.status === 404 ) {
+              setNotification( { 
+                message: `Information of ${existingPerson.name} has already been removed from server`,
+                type: 'error'
+              });
+              setTimeout(() => {
+                setNotification({ message: null, type: ''});
+              }, 5000);
 
-            //   //Remove deleted person from UI ok
-            //   setPersons(persons.filter(p => p.id !== existingPerson.id));
+              //Remove deleted person from UI ok
+              setPersons(persons.filter(p => p.id !== existingPerson.id));
 
-            //  } else{
-            //   // for errors , you can log or handle differently if needed
-            //   console.log(error);
-            //  }
+             } else{
+              // for errors , you can log or handle differently if needed
+              console.log(error);
+             }
 
-            // });
+            });
 
         return
       }
