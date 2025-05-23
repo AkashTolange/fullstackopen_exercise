@@ -3,6 +3,9 @@
 const express = require("express");
 const app = express();
 
+//to handle json body, we use middleware:
+app.use(express.json());
+
 const persons = [
   { id: "1", name: "Arto Hellas", number: "040-123456" },
   { id: "2", name: "Ada Lovelace", number: "39-44-5323523" },
@@ -35,6 +38,22 @@ app.get('/api/persons/:id', (req, res) => {
         res.status(404).send({error: 'Perosn not found'});
     }
 });
+
+//adding deltel route
+app.delete('/api/persons/:id', (req, res) => {
+    const id = req.params.id;
+    const index = persons.findIndex(p => p.id === id);
+
+    if ( index !== -1) {
+        persons.splice(index, 1);
+        res.status(204).end(); //No content
+
+    } else {
+        res.status(404).json({ error: 'Person not found'});
+    }
+})
+
+
 
 const PORT = 3001;
 app.listen(PORT, () => { 
