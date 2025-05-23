@@ -23,6 +23,19 @@ app.get('/info', (req, res) => {
     res.send(`<p>Phonebook has info for ${total} people </p> <p> ${date}</p>`);
 })
 
+//return person by ID
+app.get('/api/persons/:id', (req, res) => {
+    const id = req.params.id;
+    const person = persons.find(p => p.id === id);
+
+    if (person) {
+        res.json(person);
+
+    } else{
+        res.status(404).send({error: 'Perosn not found'});
+    }
+});
+
 const PORT = 3001;
 app.listen(PORT, () => { 
     console.log(`server running on port ${PORT}`);
