@@ -53,7 +53,31 @@ app.delete('/api/persons/:id', (req, res) => {
     }
 })
 
+//adding post route
+app.post('/api/persons', (req, res) => {
+    const body = req.body;
 
+    //checking ig name or number is missing 
+    if (!body.name || !body.number) {
+    return res.status(400).json({ error: 'name or number missing' });
+  }
+
+  //so now checking if name already exists
+  const nameExists = persons.some(p => p.name === body.name);
+  if (nameExists) {
+    return res.status(400).json({error: 'name must be unique'});
+  }
+
+  
+  const newPerson ={
+    id: Math.floor(Math.random() * 1000000).toString(), //random uique id
+    name: body.name,
+    number: body.number
+  };
+
+  persons.push(newPerson);
+  res.status(201).json(newPerson);
+})
 
 const PORT = 3001;
 app.listen(PORT, () => { 
