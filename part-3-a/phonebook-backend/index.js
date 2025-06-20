@@ -1,10 +1,15 @@
 // console.log("hello akash ");
 
 const express = require("express");
+//EX: 3.7 add morgan middleware to ur app
+const morgan = require("morgan");
+
 const app = express();
 
 //to handle json body, we use middleware:
-app.use(express.json());
+// app.use(express.json());
+
+app.use(morgan("tiny")); // "tinay", "combined", "common"
 
 const persons = [
   { id: "1", name: "Arto Hellas", number: "040-123456" },
@@ -13,12 +18,13 @@ const persons = [
   { id: "4", name: "Mary Poppendieck", number: "39-23-6423122" },
 ];
 
-
+//ex: 3.1
 app.get('/api/persons', (req, res) => {
     res.json(persons);
 });
 
-//info rotue with current date and count
+
+//EX:3.2 info rotue with current date and count
 app.get('/info', (req, res) => { 
     const total = persons.length;
     const date = new Date();
@@ -26,7 +32,7 @@ app.get('/info', (req, res) => {
     res.send(`<p>Phonebook has info for ${total} people </p> <p> ${date}</p>`);
 })
 
-//return person by ID
+//EX:3.3 return person by ID
 app.get('/api/persons/:id', (req, res) => {
     const id = req.params.id;
     const person = persons.find(p => p.id === id);
@@ -39,7 +45,7 @@ app.get('/api/persons/:id', (req, res) => {
     }
 });
 
-//adding deltel route
+//EX: adding deltel route
 app.delete('/api/persons/:id', (req, res) => {
     const id = req.params.id;
     const index = persons.findIndex(p => p.id === id);
@@ -53,7 +59,7 @@ app.delete('/api/persons/:id', (req, res) => {
     }
 })
 
-//adding post route
+//EX: 3.5 adding post route
 app.post('/api/persons', (req, res) => {
     const body = req.body;
 
@@ -62,13 +68,14 @@ app.post('/api/persons', (req, res) => {
     return res.status(400).json({ error: 'name or number missing' });
   }
 
-  //so now checking if name already exists
+//EX: 3.6 so now checking if name already exists
   const nameExists = persons.some(p => p.name === body.name);
   if (nameExists) {
+    //ex: 3.6
     return res.status(400).json({error: 'name must be unique'});
   }
 
-  
+
   const newPerson ={
     id: Math.floor(Math.random() * 1000000).toString(), //random uique id
     name: body.name,
