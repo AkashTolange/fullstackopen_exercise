@@ -1,0 +1,14 @@
+DELETE http://localhost:3001/api/persons/2
+
+###
+
+GET http://localhost:3001/api/persons
+
+### Add new person to phonebook
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "Lissa Marttinen",
+  "number": "040-243563"
+}
