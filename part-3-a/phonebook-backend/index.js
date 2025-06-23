@@ -4,12 +4,18 @@ const express = require("express");
 //EX: 3.7 add morgan middleware to ur app
 const morgan = require("morgan");
 
+const cors = require('cors');
+
+
 const app = express();
 
 //to handle json body, we use middleware:
-// app.use(express.json());
+app.use(cors()); //enable cors for all routes
+app.use(express.json());
 
 app.use(morgan("tiny")); // "tinay", "combined", "common"
+
+app.use(express.static('dist'));
 
 const persons = [
   { id: "1", name: "Arto Hellas", number: "040-123456" },
@@ -86,7 +92,8 @@ app.post('/api/persons', (req, res) => {
   res.status(201).json(newPerson);
 })
 
-const PORT = 3001;
+// const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => { 
     console.log(`server running on port ${PORT}`);
 });
