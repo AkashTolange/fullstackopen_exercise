@@ -132,12 +132,12 @@ app.delete('/api/persons/:id', (req, res) => {
 //monogdb
 
 //EX: 3.5 adding post route
-app.post('/api/persons', (req, res) => {
-    const body = req.body;
+app.post('/api/persons', (request, response, next) => {
+    const body = request.body;
 
     //checking ig name or number is missing 
     if (!body.name || !body.number) {
-    return res.status(400).json({ error: 'name or number missing' });
+    return response.status(400).json({ error: 'name or number missing' });
   }
 
   //checking if name already exists in the database 
