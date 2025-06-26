@@ -55,6 +55,7 @@ const Person = mongoose.model('Person', personSchema);
 //for mongodb 
 
 //ex: 3.1
+//ex: 3.18 inspected individual phonebook entry from the browser 
 app.get('/api/persons', (req, res) => {
     // res.json(persons);
     Person.find({}).then(persons => {
@@ -68,6 +69,7 @@ app.get('/api/persons', (req, res) => {
 
 //for mongo
 //EX:3.2 info rotue with current date and count
+//ex: 3.18 inspected individual phonebook entry from the browser 
 app.get('/info', async (request, response) => { 
   //local array ko 
     // const total = persons.length;
