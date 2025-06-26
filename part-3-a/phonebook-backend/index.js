@@ -35,10 +35,17 @@ app.use(requestLogger);
 //   { id: "4", name: "Mary Poppendieck", number: "39-23-6423122" },
 // ];
 
-//let's start from here 
+//let's start from here  and use mongoose built- validation in our personSchema
 const personSchema = new mongoose.Schema({
-  name: String,
-  number: String,
+  name: {
+    type: String,
+    minlength: 3,
+    required: true
+  },
+  number: {
+    type: String,
+    required: true
+  } 
 });
 
 personSchema.set('toJSON', {
@@ -223,7 +230,9 @@ const errorHandler = (error, request, response, next) => {
 
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'malformatted id' })
-  } 
+  } else if(error.name === 'ValidationError'){ 
+    return response.status(400).json({ error: error.message });
+  }
 
   next(error)
 }
