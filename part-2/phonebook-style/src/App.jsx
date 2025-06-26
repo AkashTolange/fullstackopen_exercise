@@ -106,7 +106,16 @@ const App = () => {
         setTimeout(() => {
           setNotification( { message: null, type: '' });
         }, 5000)
-      })
+      }).catch(error => {
+    //  Show Mongoose validation error
+    setNotification({
+      message: error.response.data.error,
+      type: 'error'
+    });
+    setTimeout(() => {
+      setNotification({ message: null, type: '' });
+    }, 5000);
+  });
   }
 
   //DELETEPERSON
