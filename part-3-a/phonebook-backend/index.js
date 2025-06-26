@@ -68,7 +68,7 @@ app.get('/api/persons', (req, res) => {
 
 //for mongo
 //EX:3.2 info rotue with current date and count
-app.get('/info', async (req, res) => { 
+app.get('/info', async (request, response) => { 
   //local array ko 
     // const total = persons.length;
     // const date = new Date();
@@ -76,7 +76,7 @@ app.get('/info', async (req, res) => {
     try{
       const total = await Person.countDocuments({});
       const date = new Date();
-      res.send(`<p>Phonebook has info for ${total} people</p><p>${date}</p>`);
+      response.send(`<p>Phonebook has info for ${total} people</p><p>${date}</p>`);
     } catch (err){
         response.status(500).send({ error: "Failed to count documents:"});
     }
@@ -84,7 +84,7 @@ app.get('/info', async (req, res) => {
 
 //for mongodb
 //EX:3.3 return person by ID
-app.get('/api/persons/:id', (req, res) => {
+app.get('/api/persons/:id', (request, response) => {
     // const id = req.params.id;
     // const person = persons.find(p => p.id === id);
 
@@ -103,6 +103,10 @@ app.get('/api/persons/:id', (req, res) => {
         response.status(404).send({ error: 'Person not found'});
       }
     }).catch(error => { 
+      // console.log(error);
+      // response.status(400).send({ error: 'malformatted id'})
+      //moving /passing the error forward with the next function 
+      //next function is passed to the handler as the third parameter.
       next(error); //this willg goto your error handler middlerware
     })
 });
@@ -180,22 +184,49 @@ app.post('/api/persons', (request, response, next) => {
 });
 
 
+//func to update single note ,
+app.put('/api/persons/:id', (request, response, next) =>{
+  const {name, number} = request.body;
+
+  Person.findByIdAndUpdate(request.params.id)
+  .then(person => {
+    if (!person) {
+      return response.status(404).send({ error: 'Person not found'})
+    }
+
+    person.name = name
+    person.number = number
+
+    return person.save();
+  })    //nested promises, within the outer .then method, another promised chain is defined:
+  .then((updatedPerson) => { 
+      if(updatedPerson){
+           response.json(updatedPerson)
+        }
+  })
+  .catch(error => next(error))
+});
+
+
 //we are writing our own code 
 app.use((request, response, next) => { 
     response.status(404).send("no code available to handle this request");
     // next();
 })
 
-const errorHandler = (error, request, response, next) => {
-  console.error(error.message)
 
-  if (error.name === 'CastError') {
-    return response.status(400).send({ error: 'malformatted id' })
-  } 
+// //expressing error handlers are middleware that are defined with function that accepts four parameters.
+// const errorHandler = (error, request, response, next) => {
+//   console.error(error.message)
 
-  next(error)
-}
-app.use(errorHandler);
+//   if (error.name === 'CastError') {
+//     return response.status(400).send({ error: 'malformatted id' })
+//   } 
+
+//   next(error)
+// }
+// //this has  to be the last loaded middlware , also all the routes should be registered before this!
+// app.use(errorHandler);
 
 // const PORT = 3001;
 // const PORT = process.env.PORT || 3001;
