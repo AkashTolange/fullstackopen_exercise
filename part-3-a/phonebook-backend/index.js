@@ -215,18 +215,18 @@ app.use((request, response, next) => {
 })
 
 
-// //expressing error handlers are middleware that are defined with function that accepts four parameters.
-// const errorHandler = (error, request, response, next) => {
-//   console.error(error.message)
+//expressing error handlers are middleware that are defined with function that accepts four parameters.
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
 
-//   if (error.name === 'CastError') {
-//     return response.status(400).send({ error: 'malformatted id' })
-//   } 
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatted id' })
+  } 
 
-//   next(error)
-// }
-// //this has  to be the last loaded middlware , also all the routes should be registered before this!
-// app.use(errorHandler);
+  next(error)
+}
+//this has  to be the last loaded middlware , also all the routes should be registered before this!
+app.use(errorHandler);
 
 // const PORT = 3001;
 // const PORT = process.env.PORT || 3001;
