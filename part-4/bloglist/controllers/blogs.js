@@ -21,8 +21,23 @@ blogsRouter.get('/', async (request, response) => {
 // })
 
 //change from then catch to async await
+// blogsRouter.post('/', async (request, response) => {
+//   const blog = new Blog(request.body)
+//   const savedBlog = await blog.save()
+//   response.status(201).json(savedBlog)
+// })
+//updating this post logic to apply default
 blogsRouter.post('/', async (request, response) => {
-  const blog = new Blog(request.body)
+  // const blog = new Blog(request.body)
+  const body = request.body;
+
+  const blog = new Blog({
+    title: body.title,
+    author: body.author,
+    url: body.url,
+    likes: body.likes || 0, // Set likes to 0 if not provided
+  })
+  
   const savedBlog = await blog.save()
   response.status(201).json(savedBlog)
 })
