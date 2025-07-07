@@ -4,6 +4,7 @@ const blogsRouter = require('./controllers/blogs')
 
 const middleware = require('./utils/middleware')
 const usersRouter = require('./controllers/users')
+const loginRouter = require('./controllers/login')
 
 
 
@@ -16,5 +17,6 @@ app.use(express.json())
 app.use('/api/blogs', blogsRouter)
 app.use(middleware.errorHandler)
 app.use('/api/users', usersRouter)
+app.use('/api/login', loginRouter)  
 
 module.exports = app
