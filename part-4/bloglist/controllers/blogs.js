@@ -50,12 +50,36 @@ blogsRouter.post('/', async (request, response, next) => {
 //deleting a blog post 
 blogsRouter.delete('/:id', async (request, response, next) => {
   try {
-    await Blog.findByIdAndRemove(request.params.id)
+    await Blog.findByIdAndDelete(request.params.id)
     response.status(204).end()
   } catch (error) {
     next(error)
   }
 })
+
+//updating a blog post ok bro through___mainly likes 
+blogsRouter.put('/:id', async (request, response, next) => {
+  const { title, author, url, likes } = request.body
+
+  const blog = {
+    title,
+    author,
+    url,
+    likes,
+  }
+
+  try {
+    const updatedBlog = await Blog.findByIdAndUpdate(
+      request.params.id,
+      blog,
+      { new: true, runValidators: true, context: 'query' }
+    )
+    response.json(updatedBlog)
+  } catch (error) {
+    next(error)
+  }
+})
+
 
 
 module.exports = blogsRouter
