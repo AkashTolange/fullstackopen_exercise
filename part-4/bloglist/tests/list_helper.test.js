@@ -156,3 +156,21 @@ test('likes default to 0 if missing', async () => {
 
   expect(response.body.likes).toBe(0)
 })
+
+
+//respond 400 if titile or url is missing
+//add test 
+test('blog without title and url is not added', async () => {
+  const invalidBlog = {
+    author: 'Invalid Author',
+    likes: 3,
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(invalidBlog)
+    .expect(400)
+
+  const blogsAtEnd = await Blog.find({})
+  expect(blogsAtEnd).toHaveLength(initialBlogs.length)
+})
