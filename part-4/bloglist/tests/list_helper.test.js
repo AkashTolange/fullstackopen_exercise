@@ -1,10 +1,15 @@
 // tests/list_helper.test.js
 
-const { test, describe} = require('node:test')
-const assert = require('node:assert')
+// const { test, describe} = require('node:test')
+// const assert = require('node:assert')
 const listHelper = require('../utils/list_helper')
 
+// totalLikes tests
+// favoriteBlog tests
+// mostBlogs tests
+// mostLikes tests
 
+//remember only unit tests only here ok 
 describe('total likes', () => {
   const listWithOneBlog = [
     {
@@ -19,12 +24,15 @@ describe('total likes', () => {
 
   test('when list has only one blog, equals the likes of that', () => {
     const result = listHelper.totalLikes(listWithOneBlog)
-    assert.strictEqual(result, 5)
+    // assert.strictEqual(result, 5)
+    expect(result).toBe(5)
+
   })
 
   test('of empty list is zero', () => {
     const result = listHelper.totalLikes([])
-    assert.strictEqual(result, 0)
+    // assert.strictEqual(result, 0)
+    expect(result).toBe(0)
   })
 
   test('of a bigger list is calculated right', () => {
@@ -39,7 +47,8 @@ describe('total likes', () => {
       }
     ]
     const result = listHelper.totalLikes(blogs)
-    assert.strictEqual(result, 5)
+    // assert.strictEqual(result, 5)
+    expect(result).toBe(5)
   })
 })
 
@@ -54,12 +63,14 @@ describe('favorite blog', () => {
 
   test('returns the blog with most likes', () => {
     const result = listHelper.favoriteBlog(blogs)
-    assert.deepStrictEqual(result, { title: 'Blog 2', likes: 10 })
+    // assert.deepStrictEqual(result, { title: 'Blog 2', likes: 10 })
+    expect(result).toEqual({ title: 'Blog 2', likes: 10 })
   })
 
   test('empty list returns null', () => {
     const result = listHelper.favoriteBlog([])
-    assert.strictEqual(result, null)
+    // assert.strictEqual(result, null)
+    expect(result).toBeNull()
   })
 })
 
@@ -77,12 +88,14 @@ describe('most blogs', () => {
 
   test('returns the author with most blogs and count', () => {
     const result = listHelper.mostBlogs(blogs)
-    assert.deepStrictEqual(result, { author: 'Bob', blogs: 3 })
+    // assert.deepStrictEqual(result, { author: 'Bob', blogs: 3 })
+    expect(result).toEqual({ author: 'Bob', blogs: 3 })
   })
 
   test('empty list returns null', () => {
     const result = listHelper.mostBlogs([])
-    assert.strictEqual(result, null)
+    // assert.strictEqual(result, null)
+     expect(result).toBe(null)
   })
 })
 
@@ -98,79 +111,16 @@ describe('most likes', () => {
 
   test('returns the author with most likes and total count', () => {
     const result = listHelper.mostLikes(blogs)
-    assert.deepStrictEqual(result, { author: 'Alice', likes: 12 })
+    // assert.deepStrictEqual(result, { author: 'Alice', likes: 12 })
+    expect(result).toEqual({ author: 'Alice', likes: 12 })
   })
 
   test('empty list returns null', () => {
     const result = listHelper.mostLikes([])
-    assert.strictEqual(result, null)
+    // assert.strictEqual(result, null)
+    expect(result).toBe(null)
   })
 })
 
-//adding test for id field 
-// This test checks if the id field is defined in the blog posts
-
-test('blog posts have id property defined', async () => {
-  const response = await api.get('/api/blogs')
-  const blog = response.body[0]
-  expect(blog.id).toBeDefined()
-})
 
 
-//add post test 
-
-test('a valid blog can be added', async () => {
-  const newBlog = {
-    title: 'New Blog',
-    author: 'New Author',
-    url: 'http://newblog.com',
-    likes: 10,
-  }
-
-  await api
-    .post('/api/blogs')
-    .send(newBlog)
-    .expect(201)
-    .expect('Content-Type', /application\/json/)
-
-  const blogsAtEnd = await Blog.find({})
-  expect(blogsAtEnd).toHaveLength(initialBlogs.length + 1)
-
-  const titles = blogsAtEnd.map(b => b.title)
-  expect(titles).toContain('New Blog')
-})
-
-
-//add test for default likes 
-test('likes default to 0 if missing', async () => {
-  const blogWithoutLikes = {
-    title: 'No Likes Blog',
-    author: 'Anonymous',
-    url: 'http://nolikes.com',
-  }
-
-  const response = await api
-    .post('/api/blogs')
-    .send(blogWithoutLikes)
-    .expect(201)
-
-  expect(response.body.likes).toBe(0)
-})
-
-
-//respond 400 if titile or url is missing
-//add test 
-test('blog without title and url is not added', async () => {
-  const invalidBlog = {
-    author: 'Invalid Author',
-    likes: 3,
-  }
-
-  await api
-    .post('/api/blogs')
-    .send(invalidBlog)
-    .expect(400)
-
-  const blogsAtEnd = await Blog.find({})
-  expect(blogsAtEnd).toHaveLength(initialBlogs.length)
-})
