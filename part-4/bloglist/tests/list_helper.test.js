@@ -106,3 +106,12 @@ describe('most likes', () => {
     assert.strictEqual(result, null)
   })
 })
+
+//adding test for id field 
+// This test checks if the id field is defined in the blog posts
+
+test('blog posts have id property defined', async () => {
+  const response = await api.get('/api/blogs')
+  const blog = response.body[0]
+  expect(blog.id).toBeDefined()
+})
