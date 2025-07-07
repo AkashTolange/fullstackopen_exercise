@@ -3,7 +3,7 @@
 
 //dummy name function to return a constant value
 const dummy = (blogs) => {
-  return 1
+  return 1;
 }
 
 module.exports = {
