@@ -1,7 +1,8 @@
-const express = require('express')
-const Blog = require('../models/blog')
+const express = require("express");
+const Blog = require("../models/blog");
+const User = require("../models/user");
 
-const blogsRouter = express.Router()
+const blogsRouter = express.Router();
 
 // blogsRouter.get('/',(request, response) => {
 //   Blog.find({}).then((blogs) =>{
@@ -9,11 +10,10 @@ const blogsRouter = express.Router()
 //   })
 // })
 
-
-blogsRouter.get('/', async (request, response) => {
-  const blogs = await Blog.find({})
-  response.json(blogs)
-})
+blogsRouter.get("/", async (request, response) => {
+  const blogs = await Blog.find({});
+  response.json(blogs);
+});
 
 // blogsRouter.post('/', (request, response) => {
 //   const blog = new Blog(request.body)
@@ -27,59 +27,69 @@ blogsRouter.get('/', async (request, response) => {
 //   response.status(201).json(savedBlog)
 // })
 //updating this post logic to apply default
-blogsRouter.post('/', async (request, response, next) => {
+blogsRouter.post("/", async (request, response, next) => {
   try {
-    const body = request.body
+    const body = request.body;
+
+    const users = await User.find({});
+    const user = users[0]; // For now just pick the first user
 
     const blog = new Blog({
-      title: body.title,
-      author: body.author,
-      url: body.url,
-      likes: body.likes || 0
-    })
+      ...body,
+      user: user._id,
+    });
+    // const blog = new Blog({
+    //   title: body.title,
+    //   author: body.author,
+    //   url: body.url,
+    //   likes: body.likes || 0,
+    // });
 
-    const savedBlog = await blog.save()
-    response.status(201).json(savedBlog)
+    const savedBlog = await blog.save();
+    response.status(201).json(savedBlog);
   } catch (error) {
-    next(error)
+    next(error);
     // console.error('POST /api/blogs error:', error.message)
     // response.status(500).json({ error: 'something went wrong' })
   }
+});
+
+blogsRouter.get('/', async (req, res) => {
+  const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
+  res.json(blogs)
 })
 
-//deleting a blog post 
-blogsRouter.delete('/:id', async (request, response, next) => {
+//deleting a blog post
+blogsRouter.delete("/:id", async (request, response, next) => {
   try {
-    await Blog.findByIdAndDelete(request.params.id)
-    response.status(204).end()
+    await Blog.findByIdAndDelete(request.params.id);
+    response.status(204).end();
   } catch (error) {
-    next(error)
+    next(error);
   }
-})
+});
 
-//updating a blog post ok bro through___mainly likes 
-blogsRouter.put('/:id', async (request, response, next) => {
-  const { title, author, url, likes } = request.body
+//updating a blog post ok bro through___mainly likes
+blogsRouter.put("/:id", async (request, response, next) => {
+  const { title, author, url, likes } = request.body;
 
   const blog = {
     title,
     author,
     url,
     likes,
-  }
+  };
 
   try {
-    const updatedBlog = await Blog.findByIdAndUpdate(
-      request.params.id,
-      blog,
-      { new: true, runValidators: true, context: 'query' }
-    )
-    response.json(updatedBlog)
+    const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, {
+      new: true,
+      runValidators: true,
+      context: "query",
+    });
+    response.json(updatedBlog);
   } catch (error) {
-    next(error)
+    next(error);
   }
-})
+});
 
-
-
-module.exports = blogsRouter
+module.exports = blogsRouter;
