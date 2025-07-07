@@ -42,3 +42,23 @@ describe('total likes', () => {
     assert.strictEqual(result, 5)
   })
 })
+
+
+//for favorite blog tests
+describe('favorite blog', () => {
+  const blogs = [
+    { title: 'Blog 1', likes: 2 },
+    { title: 'Blog 2', likes: 10 },
+    { title: 'Blog 3', likes: 5 }
+  ]
+
+  test('returns the blog with most likes', () => {
+    const result = listHelper.favoriteBlog(blogs)
+    assert.deepStrictEqual(result, { title: 'Blog 2', likes: 10 })
+  })
+
+  test('empty list returns null', () => {
+    const result = listHelper.favoriteBlog([])
+    assert.strictEqual(result, null)
+  })
+})
