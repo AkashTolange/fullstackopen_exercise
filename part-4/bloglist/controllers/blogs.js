@@ -2,6 +2,7 @@ const express = require("express");
 const Blog = require("../models/blog");
 const User = require("../models/user");
 
+const jwt = require("jsonwebtoken");
 const blogsRouter = express.Router();
 
 // blogsRouter.get('/',(request, response) => {
@@ -29,24 +30,38 @@ blogsRouter.get("/", async (request, response) => {
 //updating this post logic to apply default
 blogsRouter.post("/", async (request, response, next) => {
   try {
-    const body = request.body;
+    const decodedToken = jwt.verify(req.token, process.env.SECRET);
+    if (!decodedToken.id) {
+      return res.status(401).json({ error: "token missing or invalid" });
+    }
 
-    const users = await User.find({});
-    const user = users[0]; // For now just pick the first user
+    const user = await User.findById(decodedToken.id);
 
-    const blog = new Blog({
-      ...body,
-      user: user._id,
-    });
-    // const blog = new Blog({
-    //   title: body.title,
-    //   author: body.author,
-    //   url: body.url,
-    //   likes: body.likes || 0,
-    // });
-
+    const blog = new Blog({ ...req.body, user: user._id });
     const savedBlog = await blog.save();
-    response.status(201).json(savedBlog);
+
+    user.blogs = user.blogs.concat(savedBlog._id);
+    await user.save();
+
+    res.status(201).json(savedBlog);
+    // const body = request.body;
+
+    // const users = await User.find({});
+    // const user = users[0]; // For now just pick the first user
+
+    // const blog = new Blog({
+    //   ...body,
+    //   user: user._id,
+    // });
+    // // const blog = new Blog({
+    // //   title: body.title,
+    // //   author: body.author,
+    // //   url: body.url,
+    // //   likes: body.likes || 0,
+    // // });
+
+    // const savedBlog = await blog.save();
+    // response.status(201).json(savedBlog);
   } catch (error) {
     next(error);
     // console.error('POST /api/blogs error:', error.message)
@@ -54,10 +69,10 @@ blogsRouter.post("/", async (request, response, next) => {
   }
 });
 
-blogsRouter.get('/', async (req, res) => {
-  const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
-  res.json(blogs)
-})
+blogsRouter.get("/", async (req, res) => {
+  const blogs = await Blog.find({}).populate("user", { username: 1, name: 1 });
+  res.json(blogs);
+});
 
 //deleting a blog post
 blogsRouter.delete("/:id", async (request, response, next) => {
