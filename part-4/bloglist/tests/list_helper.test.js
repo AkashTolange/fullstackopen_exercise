@@ -85,3 +85,24 @@ describe('most blogs', () => {
     assert.strictEqual(result, null)
   })
 })
+
+//for most likes tests
+// This test checks if the author with the most likes is returned correctly
+describe('most likes', () => {
+  const blogs = [
+    { author: 'Alice', likes: 5 },
+    { author: 'Bob', likes: 3 },
+    { author: 'Alice', likes: 7 },
+    { author: 'Charlie', likes: 2 }
+  ]
+
+  test('returns the author with most likes and total count', () => {
+    const result = listHelper.mostLikes(blogs)
+    assert.deepStrictEqual(result, { author: 'Alice', likes: 12 })
+  })
+
+  test('empty list returns null', () => {
+    const result = listHelper.mostLikes([])
+    assert.strictEqual(result, null)
+  })
+})
