@@ -13,3 +13,90 @@ Content-Type: application/json
 
 ###
 GET http://localhost:3003/api/blogs
+
+
+### to create new blog post valid
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+  "title": "How to REST properly",
+  "author": "Akash Tolange",
+  "url": "https://restclient.dev/blog",
+  "likes": 10
+}
+### to create blog without likes (should default to 0 ok )
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+  "title": "Blog Without Likes",
+  "author": "Anonymous",
+  "url": "https://nolikes.dev"
+}
+
+
+### to creat invalid blog post ( vanna le missing title , url and should return 400)
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+  "author": "No Title or URL"
+}
+
+
+### to delete blog post
+DELETE http://localhost:3003/api/blogs/yaha blog_id halnew bro 
+
+
+### to update blog post - update likes only 
+PUT http://localhost:3003/api/blogs/yaha pane blog ko id halnew bro
+Content-Type: application/json
+
+{
+  "likes": 99
+}
+
+
+### for all routes client(user ko lage ) 
+### register user
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+  "username": "akash",
+  "name": "Akash Tolange",
+  "password": "secure123"
+}
+
+### login user 
+POST http://localhost:3003/api/login
+Content-Type: application/json
+
+{
+  "username": "akash",
+  "password": "secure123"
+}
+
+
+### Create Blog (use token below)
+POST http://localhost:3003/api/blogs
+Authorization: Bearer token halenw yaha chae
+Content-Type: application/json
+
+{
+  "title": "New Blog",
+  "author": "Akash",
+  "url": "https://akash.blog",
+  "likes": 10
+}
+
+### Delete Blog (replace blog ID and token)
+DELETE http://localhost:3003/api/blogs/id lekhne blog ko 
+Authorization: Bearer token halenw yaha chae 
+
+### Get Blogs
+GET http://localhost:3003/api/blogs
+
+### Get Users
+GET http://localhost:3003/api/users
