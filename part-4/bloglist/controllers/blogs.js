@@ -30,14 +30,14 @@ blogsRouter.get("/", async (request, response) => {
 //updating this post logic to apply default
 blogsRouter.post("/", async (request, response, next) => {
   try {
-    const decodedToken = jwt.verify(req.token, process.env.SECRET);
-    if (!decodedToken.id) {
-      return res.status(401).json({ error: "token missing or invalid" });
+    const body = request.body;
+    const user = request.user; // Extracted from middleware
+   
+    if (!user) {
+      return response.status(401).json({ error: "token missing or invalid" });
     }
 
-    const user = await User.findById(decodedToken.id);
-
-    const blog = new Blog({ ...req.body, user: user._id });
+    const blog = new Blog({ ...body, user: user._id });
     const savedBlog = await blog.save();
 
     user.blogs = user.blogs.concat(savedBlog._id);
