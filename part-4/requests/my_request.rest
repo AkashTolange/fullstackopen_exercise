@@ -1,0 +1,15 @@
+
+
+###
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+  "title": "My First Blog Post",
+  "author": "Akash Tolange",
+  "url": "https://akash.dev/blog1",
+  "likes": 10
+}
+
+###
+GET http://localhost:3003/api/blogs
