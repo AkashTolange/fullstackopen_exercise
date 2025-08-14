@@ -81,7 +81,7 @@ Content-Type: application/json
 
 ### Create Blog (use token below)
 POST http://localhost:3003/api/blogs
-Authorization: Bearer token halenw yaha chae
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFrYXNoIiwiaWQiOiI2ODZjOGFlM2IzOWMyNjA1ODY3MzhkZmEiLCJpYXQiOjE3NTMxNTQ2ODUsImV4cCI6MTc1MzE1NDcxNX0.5z6IsQEk7hGwL0ezSWIJzzblzt3BWzsTHWCvhXMzPsc
 Content-Type: application/json
 
 {
