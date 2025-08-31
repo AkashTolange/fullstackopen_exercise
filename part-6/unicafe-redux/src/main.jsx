@@ -26,11 +26,6 @@ const App =() => {
   )
 }
 
-
-
-
-
-
 const renderApp = () => {
   root.render(<App/>)
   
