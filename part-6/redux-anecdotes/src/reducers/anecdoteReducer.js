@@ -24,13 +24,6 @@ const reducer = (state = initialState, action) => {
   console.log("state now: ", state);
   console.log("action", action);
 
-  // switch(action.type) {
-  //   default:
-  //     return state;
-  // }
-
-  // return state
-
   switch (action.type) {
     case "VOTE": {
       const id = action.payload
@@ -39,6 +32,11 @@ const reducer = (state = initialState, action) => {
           ? { ...anecdote, votes: anecdote.votes + 1 }
           : anecdote
       );
+    }
+    //new case 
+    case "NEW_ANECDOTE": {
+      const newAnecdote = action.payload
+      return [...state, newAnecdote]
     }
 
     default:
@@ -51,6 +49,18 @@ export const voteAnecdote =(id) => {
   return { 
     type: 'VOTE',
     payload: id
+  }
+}
+
+//action creator for new anecdote and adds a new object to the state array
+export const createAnecdote = ( content ) => { 
+  return { 
+    type: 'NEW_ANECDOTE',
+    payload: { 
+      content,
+      id: getId(),
+      votes:0
+    }
   }
 }
 
