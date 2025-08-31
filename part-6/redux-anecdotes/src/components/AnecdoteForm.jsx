@@ -1,30 +1,25 @@
 import { useDispatch } from 'react-redux'
 import { createAnecdote } from '../reducers/anecdoteReducer'
-import { useRef } from 'react'
+import { showNotification } from '../reducers/notificationReducer'
+//pahela useRef use gareko them but not we are using event.current.value ok 
+
 
 const AnecdoteForm = () => {
   const dispatch = useDispatch()
-  const inputRef = useRef()
 
   const addAnecdote = (event) => {
     event.preventDefault()
-    const content = inputRef.current.value
-    if (content) {
-      dispatch(createAnecdote(content))
-      inputRef.current.value = ''
-    }
+    const content = event.target.anecdote.value
+    dispatch(createAnecdote(content))
+    dispatch(showNotification(`You created "${content}"`, 5))
+    event.target.anecdote.value = ''
   }
 
   return (
-    <div>
-      <h2>Create new</h2>
-      <form onSubmit={addAnecdote}>
-        <div>
-          <input ref={inputRef} />
-        </div>
-        <button type="submit">create</button>
-      </form>
-    </div>
+    <form onSubmit={addAnecdote}>
+      <input name="anecdote" />
+      <button type="submit">create</button>
+    </form>
   )
 }
 
