@@ -44,7 +44,7 @@ const reducer = (state = initialState, action) => {
   }
 };
 
-//action creator for voting
+//action creator for voting and for exercise 6.6 too
 export const voteAnecdote =(id) => { 
   return { 
     type: 'VOTE',
@@ -52,6 +52,8 @@ export const voteAnecdote =(id) => {
   }
 }
 
+
+//for exercise 6.6 too
 //action creator for new anecdote and adds a new object to the state array
 export const createAnecdote = ( content ) => { 
   return { 
