@@ -1,8 +1,20 @@
 import ReactDOM from 'react-dom/client'
-import { createStore } from 'redux'
+import { combineReducers, createStore } from 'redux'
 import { Provider } from 'react-redux'
 import App from './App'
-import reducer from './reducers/anecdoteReducer'
+// import reducer from './reducers/anecdoteReducer'
+import filterReducer from './reducers/filterReducer'
+import anecdoteReducer from './reducers/anecdoteReducer'
+
+
+//aba redux store lae update gare combineReducers 
+// we have two reducers anecdoteReducer and filterReducer
+
+
+const reducer = combineReducers({ 
+  anecdotes: anecdoteReducer,
+  filter: filterReducer
+})
 
 const store = createStore(reducer)
 
