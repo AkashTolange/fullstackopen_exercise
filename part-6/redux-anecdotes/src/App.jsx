@@ -3,6 +3,7 @@
 // import { useRef } from 'react'
 import AnecdoteForm from './components/AnecdoteForm'
 import AnecdoteList from './components/AnecdoteList'
+import Filter from './components/Filter'
 
 const App = () => {
   // const anecdotes = useSelector(state => state)
@@ -43,6 +44,7 @@ const App = () => {
           </div>
         </div>
       )} */}
+      <Filter/>
       <AnecdoteList/>
       {/* from here */}
       {/* <h2>create new</h2>
