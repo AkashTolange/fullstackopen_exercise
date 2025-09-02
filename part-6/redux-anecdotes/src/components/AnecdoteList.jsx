@@ -1,6 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { updateAnecdote } from '../requests'
 
+
+//Ex: voting using useMutation and cache updates
+
 const AnecdoteList = ({ anecdotes }) => {
   const queryClient = useQueryClient()
 
