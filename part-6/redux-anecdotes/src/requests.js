@@ -2,6 +2,8 @@ import axios from 'axios'
 
 const baseUrl = 'http://localhost:3001/anecdotes'
 
+
+//forgot to mention 6.20: Fetch anecdotes using useQuery
 export const getAnecdotes = async () => {
   const { data } = await axios.get(baseUrl)
   return data

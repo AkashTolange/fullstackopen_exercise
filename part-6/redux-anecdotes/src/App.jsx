@@ -3,6 +3,8 @@ import { getAnecdotes } from './requests'
 import AnecdoteForm from './components/AnecdoteForm'
 import AnecdoteList from './components/AnecdoteList'
 
+
+//react-query
 const App = () => {
   const { data: anecdotes, isLoading, isError } = useQuery({
     queryKey: ['anecdotes'],
