@@ -9,6 +9,8 @@ import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { initializeAnecdotes } from './reducers/anecdoteReducer'
 
+//
+import Notification from './components/Notification'
 
 const App = () => {
   // const anecdotes = useSelector(state => state)
@@ -56,6 +58,7 @@ const App = () => {
           </div>
         </div>
       )} */}
+      <Notification/>
       <Filter/>
       <AnecdoteList/>
       {/* from here */}
