@@ -1,25 +1,37 @@
-import { useDispatch } from 'react-redux'
-import { createAnecdote } from '../reducers/anecdoteReducer'
-import { showNotification } from '../reducers/notificationReducer'
-//pahela useRef use gareko them but not we are using event.current.value ok 
-
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { createAnecdote } from '../requests'
 
 const AnecdoteForm = () => {
-  const dispatch = useDispatch()
+  const queryClient = useQueryClient()
 
-  const addAnecdote = (event) => {
+  const newAnecdoteMutation = useMutation({
+    mutationFn: createAnecdote,
+    onSuccess: (newAnecdote) => {
+      // update cache so UI updates instantly
+      const anecdotes = queryClient.getQueryData(['anecdotes'])
+      queryClient.setQueryData(['anecdotes'], anecdotes.concat(newAnecdote))
+    },
+  })
+
+  const onCreate = (event) => {
     event.preventDefault()
     const content = event.target.anecdote.value
-    dispatch(createAnecdote(content))
-    dispatch(showNotification(`You created "${content}"`, 5))
     event.target.anecdote.value = ''
+    if (content.length < 5) {
+      alert('anecdote must be at least 5 characters')
+      return
+    }
+    newAnecdoteMutation.mutate({ content, votes: 0 })
   }
 
   return (
-    <form onSubmit={addAnecdote}>
-      <input name="anecdote" />
-      <button type="submit">create</button>
-    </form>
+    <div>
+      <h3>create new</h3>
+      <form onSubmit={onCreate}>
+        <input name="anecdote" />
+        <button type="submit">create</button>
+      </form>
+    </div>
   )
 }
 
