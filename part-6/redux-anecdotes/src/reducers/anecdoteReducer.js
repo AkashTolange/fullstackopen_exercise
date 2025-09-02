@@ -1,48 +1,40 @@
-// reducers/anecdoteReducer.js
 import { createSlice } from '@reduxjs/toolkit'
-import anecdoteService from '../services/anecdotes'  // we'll create this service file
+import anecdoteService from '../services/anecdotes'
 
 const anecdoteSlice = createSlice({
   name: 'anecdotes',
   initialState: [],
   reducers: {
-    // set anecdotes when initializing
     setAnecdotes(state, action) {
       return action.payload
     },
-    // add a new anecdote
     appendAnecdote(state, action) {
       state.push(action.payload)
     },
-    // vote for an anecdote
-    voteAnecdote(state, action) {
-      const id = action.payload
-      const anecdoteToVote = state.find(a => a.id === id)
-      if (anecdoteToVote) {
-        anecdoteToVote.votes += 1
-      }
-    }
-  }
+    updateAnecdote(state, action) {
+      const updated = action.payload
+      return state.map(a => a.id === updated.id ? updated : a)
+    },
+  },
 })
 
-export const { setAnecdotes, appendAnecdote, voteAnecdote } = anecdoteSlice.actions
+export const { setAnecdotes, appendAnecdote, updateAnecdote } = anecdoteSlice.actions
 
-// === Thunks ===
-
-// fetch anecdotes from backend
-export const initializeAnecdotes = () => {
-  return async dispatch => {
-    const anecdotes = await anecdoteService.getAll()
-    dispatch(setAnecdotes(anecdotes))
-  }
+// thunks
+export const initializeAnecdotes = () => async (dispatch) => {
+  const anecdotes = await anecdoteService.getAll()
+  dispatch(setAnecdotes(anecdotes))
 }
 
-// create new anecdote in backend
-export const createAnecdote = (content) => {
-  return async dispatch => {
-    const newAnecdote = await anecdoteService.createNew(content)
-    dispatch(appendAnecdote(newAnecdote))
-  }
+export const createAnecdote = (content) => async (dispatch) => {
+  const newAnecdote = await anecdoteService.createNew(content)
+  dispatch(appendAnecdote(newAnecdote))
+}
+
+export const voteAnecdote = (anecdote) => async (dispatch) => {
+  const toSave = { ...anecdote, votes: anecdote.votes + 1 }
+  const saved = await anecdoteService.update(toSave.id, toSave)
+  dispatch(updateAnecdote(saved))
 }
 
 export default anecdoteSlice.reducer
